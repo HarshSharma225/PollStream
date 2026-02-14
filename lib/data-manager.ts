@@ -42,14 +42,18 @@ class DataManager {
   static createDeviceSignature(): string {
     if (typeof window === "undefined") return "";
 
+    const hardwareConcurrency =
+      (navigator as any).hardwareConcurrency?.toString() || "0";
+    const deviceMemory = (navigator as any).deviceMemory?.toString() || "0";
+
     const features = [
       navigator.userAgent,
       navigator.language,
       screen.colorDepth.toString(),
       `${screen.width}x${screen.height}`,
       new Date().getTimezoneOffset().toString(),
-      navigator.hardwareConcurrency?.toString() || "0",
-      navigator.deviceMemory?.toString() || "0",
+      hardwareConcurrency,
+      deviceMemory,
     ];
 
     return btoa(features.join("::"));

@@ -16,41 +16,40 @@ export default function PollDisplay({ pollId }: PollDisplayProps) {
     text: string;
   } | null>(null);
 
-  const refreshPollData = useCallback(() => {
-    (async () => {
-      try {
-        const res = await fetch(`/api/polls/${pollId}`);
-        if (res.ok) {
-          const json = await res.json();
-          if (json && json.poll) {
-            const data = DataManager.loadAllData();
-            data.polls = data.polls || {};
-            data.votes = data.votes || {};
-            data.polls[pollId] = json.poll;
-            data.votes[pollId] = data.votes[pollId] ||
-              json.votes || {
-                sessionVotes: {},
-                deviceVotes: {},
-                recentActivity: [],
-              };
-            DataManager.persistData(data);
-            setPollData(json.poll);
-            setParticipated(DataManager.checkParticipation(pollId));
-            setSelectedOption(DataManager.getParticipantChoice(pollId));
-            return;
-          }
+  const refreshPollData = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/polls/${pollId}`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.poll) {
+          const data = DataManager.loadAllData();
+          data.polls = data.polls || {};
+          data.votes = data.votes || {};
+          data.polls[pollId] = json.poll;
+          data.votes[pollId] =
+            data.votes[pollId] ||
+            json.votes || {
+              sessionVotes: {},
+              deviceVotes: {},
+              recentActivity: [],
+            };
+          DataManager.persistData(data);
+          setPollData(json.poll);
+          setParticipated(DataManager.checkParticipation(pollId));
+          setSelectedOption(DataManager.getParticipantChoice(pollId));
+          return;
         }
-      } catch (err) {
-        
       }
+    } catch (err) {
+      // fallback to local
+    }
 
-      const data = DataManager.retrievePoll(pollId);
-      if (data) {
-        setPollData(data);
-        setParticipated(DataManager.checkParticipation(pollId));
-        setSelectedOption(DataManager.getParticipantChoice(pollId));
-      }
-    })();
+    const data = DataManager.retrievePoll(pollId);
+    if (data) {
+      setPollData(data);
+      setParticipated(DataManager.checkParticipation(pollId));
+      setSelectedOption(DataManager.getParticipantChoice(pollId));
+    }
   }, [pollId]);
 
   useEffect(() => {
