@@ -157,7 +157,6 @@ Monitors voting activity over time windows to prevent rapid automated voting.
 
 ### Storage
 
-- localStorage has ~5-10MB limit per domain
 - No automatic cleanup of old polls
 - Browser-specific (doesn't sync across devices)
 
@@ -180,30 +179,6 @@ Monitors voting activity over time windows to prevent rapid automated voting.
 - No code splitting
 - All data in browser memory
 
-## Deployment
-
-### Vercel (Recommended)
-
-1. Push code to GitHub
-2. Import project to [vercel.com](https://vercel.com)
-3. Deploy with default settings
-
-### Netlify
-
-1. Push code to GitHub
-2. Import to [netlify.com](https://netlify.com)
-3. Build command: `npm run build`
-4. Publish directory: `.next`
-
-### Other Platforms
-
-Any platform supporting Next.js:
-
-- AWS Amplify
-- Railway
-- Render
-- Cloudflare Pages
-
 ## Future Enhancements
 
 - Backend API for true persistence
@@ -214,7 +189,3 @@ Any platform supporting Next.js:
 - Multiple choice voting
 - Poll expiration
 - Admin dashboard
-
-## License
-
-Created for educational purposes.
